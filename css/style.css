@@ -147,6 +147,10 @@ form button:hover {
     background-color: #C53030;
 } 
 
+.badge-animals {
+    background-color: #9C4221;
+}
+
 .ad-date {
     display: block;
     margin-top: 16px;

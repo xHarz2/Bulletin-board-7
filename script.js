@@ -1,3 +1,4 @@
+// Дані оголошень
 const ads = [
     { title: 'Продам велосипед гірський', category: 'Речі', daysAgo: 5 },
     { title: 'Допоможу з ремонтом сантехніки у вашій квартирі', category: 'Послуги', daysAgo: 16 },
@@ -6,40 +7,44 @@ const ads = [
     { title: 'Репетитор з вищої математики', category: 'Послуги', daysAgo: 10 }
 ];
 
+// Класи бейджів для кожної категорії
+const badgeClasses = {
+    'Речі': 'badge-items',
+    'Послуги': 'badge-services',
+    'Тварини': 'badge-animals'
+};
+
+// Скорочує текст до n символів
 const shorten = (text, n) => text.length > n ? text.slice(0, n) + '...' : text;
 
 const listContainer = document.querySelector('#listings-list');
 const countElement = document.querySelector('#listings-count');
 
+// Прибираємо статичні картки з HTML
 const staticCards = document.querySelectorAll('.static-card');
 staticCards.forEach(card => card.remove());
 
+// Рендер карток оголошень і підрахунок активних
 function renderAds(adsArray) {
-    listContainer.innerHTML = ''; 
+    listContainer.innerHTML = '';
     let activeCount = 0;
 
     for (const ad of adsArray) {
         const card = document.createElement('article');
-        card.classList.add('card'); 
+        card.classList.add('card');
 
+        // Бейдж категорії
         const badge = document.createElement('span');
         badge.classList.add('badge');
         badge.textContent = ad.category;
-        if (ad.category === 'Речі') {
-            badge.classList.add('badge-items');
-        } else if (ad.category === 'Послуги') {
-            badge.classList.add('badge-services');
-        } else {
-            badge.style.backgroundColor = '#9C4221'; 
-            badge.style.color = '#fff';
-            badge.style.padding = '4px 10px';
-            badge.style.borderRadius = '12px';
-            badge.style.fontSize = '0.85rem';
+        if (badgeClasses[ad.category]) {
+            badge.classList.add(badgeClasses[ad.category]);
         }
 
         const title = document.createElement('h3');
         title.textContent = shorten(ad.title, 30);
 
+        // Картинка-заглушка з першим словом назви
         const img = document.createElement('img');
         const imgText = ad.title.split(' ')[0];
         img.src = `https://placehold.co/400x200/EEE/31343C?text=${imgText}`;
@@ -50,6 +55,7 @@ function renderAds(adsArray) {
 
         card.dataset.daysAgo = ad.daysAgo;
 
+        // Оголошення старші за 14 днів вважаються неактуальними
         if (ad.daysAgo > 14) {
             card.classList.add('outdated');
         } else {
